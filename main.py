@@ -16,7 +16,7 @@ def predict_tag(txt='Hello world', vectorizer=None,
                 model=None,binarizer=None,*args,**kwargs):
     input_vector = vectorizer.transform([txt])
     result = model.predict(input_vector)
-    output_tag = lb.inverse_transform(result)
+    output_tag = binarizer.inverse_transform(result)
     return output_tag[0]
 
 def get_bot_reply(predicted_tag):

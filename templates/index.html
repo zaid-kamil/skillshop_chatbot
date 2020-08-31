@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<!-- the shortcut i used for creating content below -->
+<!-- .container>.row.mt-3>.col-md-8.mx-auto -->
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-8 mx-auto">
+            <form>
+                <div class="input-group mb-3 shadow-lg">
+                    <input type="text" placeholder="enter your query"
+                    class="form-control" name="query" id="query">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-success">send</button>
+                    </div>
+                </div>
+            </form>
+            <div class="card border-0 shadow-lg p-3">
+                <div class="card-reply area">
+                    <li class="badge badge-warning badge-pill query p-3 text-lg">How , can i help you?</li><br class="clearfix">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    function doquery(e){
+        query = $('#query').val()
+        if ( query.length >0 ) {
+            $('.area').append('<li class="badge badge-success badge-pill query p-3 text-lg float-right">'+query+'</li><br class="clearfix">')
+            $.ajax({
+                type :'GET',
+                url: '/predict',
+                data : {'query':query},
+                success : function(response){
+                    $('.area').append('<li class="badge badge-warning badge-pill query p-3 text-lg float-left">'+response['botreply']+'</li><br class="clearfix">')
+                },
+                error: function(response){
+                    $('.area').append('<li class="badge badge-warning badge-pill query p-3 text-lg float-left">i dont know that</li><br class="clearfix">')
+                }
+            });
+        }
+    }
+    // when page is loaded
+    $(function(){
+        $('.btn').click(function(e){
+            doquery(e);
+        })
+    });
+
+</script>
+{% endblock %}
+
+
